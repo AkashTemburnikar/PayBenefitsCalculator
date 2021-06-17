@@ -1,0 +1,87 @@
+﻿@model Employees
+@{ Layout = "_Layout"; ViewBag.Title = "Add a Employee";}
+<script>
+    $(document).ready(function () {
+        $("#ChildDependent").on("change", function () {
+            $("#textboxChildDiv").empty();
+            var count = $("#ChildDependent").val();
+            for (var i = 1; i <= count; i++) {
+                $("#textboxChildDiv").append("<label for='Name'>Child " +  i + " Name:</label>").append("<input class='form-control' name='ChildName" + i + "' id='ChildName" + i +"'/>");
+            }
+        });
+
+        $("#SpouseDependent").on("change", function () {
+            $("#textboxSpouseDiv").empty();
+            var count = $("#SpouseDependent").val();
+            for (var i = 1; i <= count; i++) {
+                $("#textboxSpouseDiv").append("<label for='Name'>Spouse " + i + " Name:</label>").append("<input class='form-control' name='SpouseName" + i + "' id='SpouseName" + i + "'/>");
+            }
+        });
+    });
+</script>
+<h2>Add a Employee <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a></h2>
+<form asp-action="AddEmployee" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label for="Name">First Name:</label>
+        <input class="form-control" name="FirstName" />
+    </div>
+    <div class="form-group">
+        <label for="Name">Last Name:</label>
+        <input class="form-control" name="LastName" />
+    </div>
+    <div class="form-group">
+        <label for="Name">Email ID:</label>
+        <input class="form-control" name="EmailID" />
+    </div>
+    <div class="form-group">
+        <label for="Name">Select child dependents: </label>
+        <select class="form-control" id="ChildDependent" name="ChildDependent">
+            @* TODO: Loop over -- remove hardcode *@
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </div>
+    <div class="form-group" id="textboxChildDiv"></div>
+    <div class="form-group">
+        <label for="Name">Select spouse dependents: </label>
+        <select class="form-control" id="SpouseDependent" name="SpouseDependent">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+        </select>
+    </div>
+    <div class="form-group" id="textboxSpouseDiv"></div>
+    <div class="text-center panel-body">
+        <button type="submit" class="btn btn-sm btn-primary">Add</button>
+        <h3>@ViewBag.StatusCode</h3>
+    </div>
+</form>
+
+@if (Model != null)
+{
+    <h2>Employee</h2>
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Child Dependents Selected:</th>
+                <th>Spouse Dependents Selected:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.EmployeeId</td>
+                <td>@Model.FirstName</td>
+                <td>@Model.LastName</td>
+                <td>@Model.childDependents</td>
+                <td>@Model.spouseDependents</td>
+            </tr>
+        </tbody>
+    </table>
+}

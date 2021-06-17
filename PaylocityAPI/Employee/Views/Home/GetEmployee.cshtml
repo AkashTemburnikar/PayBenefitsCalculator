@@ -1,0 +1,30 @@
+﻿@model Employees
+@{ Layout = "_Layout"; ViewBag.Title = "Get Employee by Id";}
+
+<h3>@ViewBag.StatusCode</h3>
+<h2>Employee <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a></h2>
+@if (Model != null)
+{
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email ID</th>
+                <th>Special Discount on Benifits</th>
+                <th>Total Benifits Deduction</th>
+                <th>Take Home Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.FirstName</td>
+                <td>@Model.LastName</td>
+                <td>@Model.EmailID</td>
+                <td>@Model.specialDiscount</td>
+                <td>@Model.totalDeduction</td>
+                <td>@Model.TakeHome</td>
+            </tr>
+        </tbody>
+    </table>
+}

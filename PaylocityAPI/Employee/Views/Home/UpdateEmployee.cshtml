@@ -1,0 +1,118 @@
+﻿@model Employees
+@{ Layout = "_Layout"; ViewBag.Title = "Update a Employee";}
+<script>
+    $(document).ready(function () {
+        $("#childDependents").on("change", function () {
+            $("#textboxChildDiv").empty();
+            var count = $("#childDependents").val();
+            for (var i = 1; i <= count; i++) {
+                $("#textboxChildDiv").append("<label for='Name'>Child " + i + " Name:</label>").append("<input class='form-control' name='ChildName" + i + "' id='ChildName" + i + "'/>");
+            }
+        });
+
+        $("#spouseDependents").on("change", function () {
+            $("#textboxSpouseDiv").empty();
+            var count = $("#spouseDependents").val();
+            for (var i = 1; i <= count; i++) {
+                $("#textboxSpouseDiv").append("<label for='Name'>Spouse " + i + " Name:</label>").append("<input class='form-control' name='SpouseName" + i + "' id='SpouseName" + i + "'/>");
+            }
+        });
+
+        var empID = $("#EmployeeId").val()
+        var urlLink = "https://localhost:44343/api/Employee/" + empID
+
+        $.ajax({
+            url: urlLink,
+            type: 'GET',
+            async: false,
+            crossDomain: true,
+            dataType: 'json', // added data type
+            success: function (res) {
+                for (var i = 0, j = 1; i < res["Dependents"].length; i++,j++) {
+                    var name = res["Dependents"][i].Name;
+                    if (res["Dependents"][i].DepTypeId == 1) {
+                        $("#textboxChildDiv").append("<label for='Name'>Child " + j + " Name:</label>").append("<input class='form-control' name='ChildName" + j + "' id='ChildName" + j + "'/>");
+                        $("#ChildName" + j).val(name)
+                    }
+                    else if (res["Dependents"][i].DepTypeId == 2) {
+                        $("#textboxSpouseDiv").append("<label for='Name'>Spouse " + j + " Name:</label>").append("<input class='form-control' name='SpouseName" + j + "' id='SpouseName" + j + "'/>");
+                        $("#SpouseName" + j).val(name)
+                    }
+                }
+            }
+        });
+    });
+</script>
+<h2>Update a Employee <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a></h2>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input class="form-control" asp-for="EmployeeId" readonly type="hidden" />
+    </div>
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input class="form-control" asp-for="FirstName" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input class="form-control" asp-for="LastName" />
+    </div>
+    <div class="form-group">
+        <label asp-for="EmailID"></label>
+        <input class="form-control" asp-for="EmailID" />
+    </div>
+    <div class="form-group">
+        <label asp-for="childDependents"></label>
+        <select class="form-control" asp-for="childDependents">
+            @* TODO: Loop over -- remove hardcode *@
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </div>
+    <div class="form-group" id="textboxChildDiv"></div>
+    <div class="form-group">
+        <label asp-for="spouseDependents"></label>
+        <select class="form-control" asp-for="spouseDependents">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </div>
+    <div class="form-group" id="textboxSpouseDiv"></div>
+    <div class="text-center panel-body">
+        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+        <h3>@ViewBag.StatusCode</h3>
+    </div>
+</form>
+
+@*@if (ViewBag.Result == "Success")
+{
+    <h2>Reservation</h2>
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Child Dependents Selected:</th>
+                <th>Spouse Dependents Selected:</th>
+                <th>EmailID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.EmployeeId</td>
+                <td>@Model.FirstName</td>
+                <td>@Model.LastName</td>
+                <td>@Model.childDependents</td>
+                <td>@Model.spouseDependents</td>
+                <td>@Model.EmailID</td>
+            </tr>
+        </tbody>
+    </table>
+}*@

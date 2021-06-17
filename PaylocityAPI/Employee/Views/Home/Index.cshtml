@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Employees>
+@{ Layout = "_Layout"; ViewBag.Title = "All Employees";}
+
+<h2>All Employees</h2>
+<a asp-action="AddEmployee" class="btn btn-sm btn-primary">Add Employee</a>
+
+<table class="table table-sm table-striped table-bordered m-2">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email ID</th>
+            <th>Update Info</th>
+            <th>Paycheck Info</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+        <tr>
+            <td>@r.FirstName</td>
+            <td>@r.LastName</td>
+            <td>@r.EmailID</td>
+            <td>
+                <a asp-action="UpdateEmployee" asp-route-id="@r.EmployeeId">
+                    <img src="/icon/edit.png" />
+                </a>
+            </td>
+            <td>
+                <form asp-action="GetEmployee" method="post" asp-route-id="@r.EmployeeId">
+                    <input type="image" src="/icon/edit.png" />
+                </form>
+            </td>
+            <td>
+                <form asp-action="DeleteEmployee" method="post" asp-route-id="@r.EmployeeId">
+                    <input type="hidden" value="@r.EmployeeId" name="EmployeeId" />
+                    <input type="image" src="/icon/close.png" />
+                </form>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<h3>@TempData["StatusCode"]</h3>
